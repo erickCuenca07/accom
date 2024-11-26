@@ -2,39 +2,33 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
 
-class DatabaseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'Super Admin']);
+        $role = Role::create(['name' => 'cliente']);
 
         $permissions = [
             'listar-encuentas',
             'crear-encuentas',
-            'editar-encuentas',
-            'eliminar-encuentas'
-        ];        
-        foreach ($permissions as $permissionName) {
-            Permission::create(['name' => $permissionName]);
-        }
+        ]; 
 
         $permissionsCollection = Permission::whereIn('name', $permissions)->get();
         $role->syncPermissions($permissionsCollection);
 
         User::create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@accom.com',
+            'name' => 'Cliente',
+            'email' => 'cliente@accom.com',
             'password' => bcrypt('12345678'),
         ])->assignRole($role);
-        
     }
 }
