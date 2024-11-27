@@ -18,10 +18,10 @@ class DatabaseSeeder extends Seeder
         $role = Role::create(['name' => 'Super Admin']);
 
         $permissions = [
-            'listar-encuentas',
-            'crear-encuentas',
-            'editar-encuentas',
-            'eliminar-encuentas'
+            'listar-encuestas',
+            'crear-encuestas',
+            'editar-encuestas',
+            'eliminar-encuestas'
         ];        
         foreach ($permissions as $permissionName) {
             Permission::create(['name' => $permissionName]);

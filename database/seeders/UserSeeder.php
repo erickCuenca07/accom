@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         $role = Role::create(['name' => 'cliente']);
 
         $permissions = [
-            'listar-encuentas',
-            'crear-encuentas',
+            'listar-encuestas',
+            'crear-encuestas',
         ]; 
 
         $permissionsCollection = Permission::whereIn('name', $permissions)->get();

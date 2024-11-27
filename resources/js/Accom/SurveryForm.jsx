@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField,Select,MenuItem,FormControl,InputLabel,Button,FormHelperText} from '@mui/material';
 import Grid from '@mui/material/Grid2';
+import axios from 'axios';
 
-const SurveyForm = () => {
+
+const SurveyForm = ({ onSurveyCreated, onSurveyUpdated, initialData = {} }) => {
   const [dni, setDni] = useState('');
   const [producto, setProducto] = useState('');
   const [subproducto, setSubproducto] = useState('');
@@ -10,8 +12,21 @@ const SurveyForm = () => {
   const [mantenimiento, setMantenimiento] = useState('');
   const [mantenimientoGas, setMantenimientoGas] = useState('');
   const [estado, setEstado] = useState('');
-
   const [errors, setErrors] = useState({});
+  const [id, setId] = useState('');
+
+  useEffect(() => {
+      if (initialData) {
+          setId(initialData.id || '');
+          setDni(initialData.DNICliente || '');
+          setProducto(initialData.Producto || '');
+          setSubproducto(initialData.SubProducto || '');
+          setSubproductoGas(initialData.SubProductoGas || '');
+          setMantenimiento(initialData.Mantenimiento || '');
+          setMantenimientoGas(initialData.MantenimientoGas || '');
+          setEstado(initialData.Estado || '');
+      }
+  }, [initialData]);
 
   const validateDni = (dni) => {
     const dniRegex = /^[XYZ]?\d{5,8}[A-Z]$/; // Regex simplificado para DNI/NIE
@@ -49,8 +64,39 @@ const SurveyForm = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Aquí puedes manejar el envío del formulario
-      console.log('Formulario enviado', { dni, producto, subproducto, subproductoGas, mantenimiento, mantenimientoGas, estado });
+        const data = {
+            id: id,
+            dni: dni,
+            producto: producto,
+            subproducto: subproducto,
+            subproductoGas: subproductoGas,
+            mantenimiento: mantenimiento,
+            mantenimientoGas: mantenimientoGas,
+            estado: estado
+        }
+        if(initialData.id){
+          axios.put(`/updateSurvey`,data)
+          .then(response => {
+            if (onSurveyUpdated) {
+              onSurveyUpdated(response.data.message,response.data.survey);
+            }
+          }).catch(error => {
+            if (error.response) {
+              onSurveyUpdated(error.response.data.message);
+            }
+          });
+        }else{
+          axios.post('/addSurvey',data)
+          .then(response => {
+            if (onSurveyCreated) {
+              onSurveyCreated(response.data.message,response.data.survey);
+            }
+          }).catch(error => {
+            if (error.response) {
+              onSurveyCreated(error.response.data.message);
+            }
+          })
+        }
     }
   };
 
@@ -60,6 +106,7 @@ const SurveyForm = () => {
     setSubproductoGas('');
     setMantenimiento('');
     setMantenimientoGas('');
+    setEstado('');
   };
 
   return (

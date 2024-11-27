@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('dniClient');
             $table->string('product');
             $table->string('subproduct');
-            $table->string('maintenanceLight');
-            $table->string('maintenanceGas');
+            $table->string('subProductGas')->nullable();
+            $table->string('maintenance');
+            $table->string('maintenanceGas')->nullable();
             $table->string('state');
             $table->timestamps();
         });
