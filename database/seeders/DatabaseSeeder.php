@@ -15,26 +15,38 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'Super Admin']);
-
-        $permissions = [
-            'listar-encuestas',
-            'crear-encuestas',
-            'editar-encuestas',
-            'eliminar-encuestas'
-        ];        
-        foreach ($permissions as $permissionName) {
-            Permission::create(['name' => $permissionName]);
-        }
-
-        $permissionsCollection = Permission::whereIn('name', $permissions)->get();
-        $role->syncPermissions($permissionsCollection);
+        $superAdminRole = Role::create(['name' => 'SuperAdmin']);
+        $clienteRole = Role::create(['name' => 'Cliente']);
 
         User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@accom.com',
-            'password' => bcrypt('12345678'),
-        ])->assignRole($role);
+            'password' => bcrypt('admin'),
+        ])->assignRole($superAdminRole);
         
+        /*** Permisos  ***/
+        Permission::create(['name' => 'editar-encuestas']);
+        Permission::create(['name' => 'eliminar-encuestas']);
+        Permission::create(['name' => 'ver-encuestas']);
+        Permission::create(['name' => 'crear-encuestas']);
+
+        $superAdminRole->syncPermissions([
+            'editar-encuestas',
+            'eliminar-encuestas',
+            'ver-encuestas',
+            'crear-encuestas',
+        ]);
+
+        $clienteRole->syncPermissions([
+            'ver-encuestas',
+            'crear-encuestas',
+        ]);
+
+        User::create([
+            'name' => 'Cliente',
+            'email' => 'cliente@accom.com',
+            'password' => bcrypt('cliente'),
+        ])->assignRole($clienteRole);
+
     }
 }

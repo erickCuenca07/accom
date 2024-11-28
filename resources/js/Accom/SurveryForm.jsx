@@ -16,7 +16,7 @@ const SurveyForm = ({ onSurveyCreated, onSurveyUpdated, initialData = {} }) => {
   const [id, setId] = useState('');
 
   useEffect(() => {
-      if (initialData) {
+      if (initialData && initialData.id) {
           setId(initialData.id || '');
           setDni(initialData.DNICliente || '');
           setProducto(initialData.Producto || '');

@@ -3,6 +3,8 @@ Se uso una base de datos relacional y la libreria de MUI para el diseño de la i
 
 El objetivo de la practica fue crear un Crud de encuestas que cada campo select que se modifique, los otros se ven afectados para asegurar que la encuesta sea consistente y no se puedan crear encuestas con campos inconsistentes.
 
+Use la libreria de spatie-permission para hacer un poco mas facil la creacion de roles y permisos para el sistema
+
 Una vez clonado el proyecto instalamos las dependencias de laravel con el siguiente comando 
 
 composer install 

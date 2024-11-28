@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import SurveyForm from '@/Accom/SurveryForm';
-import { Button, Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Box, Dialog, DialogTitle, DialogContent, DialogActions, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
@@ -137,12 +137,18 @@ export default function Dashboard({ surveys,permissions }) {
                                 <Grid container spacing={2} sx={{ mt: 2 }}>
                                     <Grid size={12}>
                                         <Paper sx={{ height: 400, width: '100%' }}>
-                                            <DataGrid
-                                                rows={rows}
-                                                columns={columns}
-                                                pageSize={5}
-                                                rowsPerPageOptions={[5]}
-                                            />
+                                            {rows.length > 0 ? (
+                                                <DataGrid
+                                                    rows={rows}
+                                                    columns={columns}
+                                                    pageSize={5}
+                                                    rowsPerPageOptions={[5]}
+                                                />
+                                            ) : (
+                                                <Typography variant="h6" align="center">
+                                                    No hay datos disponibles para mostrar.
+                                                </Typography>
+                                            )}
                                         </Paper>
                                     </Grid>
                                 </Grid>  
